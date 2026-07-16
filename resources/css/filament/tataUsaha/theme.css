@@ -1,0 +1,4 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/TataUsaha/**/*';
+@source '../../../../resources/views/filament/tata-usaha/**/*';
