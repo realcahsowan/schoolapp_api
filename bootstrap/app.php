@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,6 +13,26 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withSchedule(function (Schedule $schedule) {
+        $tahunAjaran = app(\App\Settings\GeneralSettings::class)->tahun_ajaran;
+        $semester = app(\App\Settings\GeneralSettings::class)->semester;
+
+        // Jadwal harian 23:30 untuk create-memorization-summaries (weekly)
+        \Illuminate\Support\Facades\Cache::forget('memorization-summary-week');
+        $today = \Illuminate\Support\Carbon::today();
+        $week = \App\Models\Tahfidz\KalenderHafalan::where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->where('tanggal', $today)
+            ->value('week') ?? 1;
+        $schedule->command("memorization:create-summaries {$tahunAjaran} {$semester} weekly {$week}")
+            ->dailyAt('23:30');
+
+        // Jadwal jurnal:summary setiap hari jam 06:50 dan 19:50
+        $schedule->command("journal:summary --tahun_ajaran={$tahunAjaran} --semester={$semester}")
+            ->dailyAt('06:50');
+        $schedule->command("journal:summary --tahun_ajaran={$tahunAjaran} --semester={$semester}")
+            ->dailyAt('19:50');
+    })
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
