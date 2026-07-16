@@ -5,6 +5,7 @@ return [
     'allowed_methods' => ['*'],
     'allowed_origins' => [
         'https://parent.milbosapp.com',
+        'https://murobbi.milbosapp.com',
         'https://milbosapp.com',
         'http://localhost:5173',
         'http://localhost:5174'
