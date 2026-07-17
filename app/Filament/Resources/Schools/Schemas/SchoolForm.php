@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SchoolForm
@@ -17,35 +18,31 @@ class SchoolForm
     {
         return $schema
             ->components([
-                TextInput::make('nama')
-                    ->label('Nama Sekolah')
-                    ->required(),
-                TextInput::make('nsm')
-                    ->label('NSM'),
-                TextInput::make('npsn')
-                    ->label('NPSN'),
-                Select::make('jenjang')
-                    ->options(static::getJenjangOptions())
-                    ->required(),
-                Textarea::make('alamat')
-                    ->label('Alamat Lengkap')
-                    ->columnSpanFull(),
-                TextInput::make('telepon')
-                    ->label('Telepon')
-                    ->tel(),
-                FileUpload::make('logo')
-                    ->label('Logo'),
-                // TextInput::make('rdm_id')
-                //     ->label('ID RDM'),
-                // TextInput::make('rdm_db')
-                //     ->label('Database RDM'),
-                // TextInput::make('alias')
-                //     ->label('Alias'),
-                // TextInput::make('fullname')
-                //     ->label('Nama Lengkap'),
-                // TextInput::make('institution_id')
-                //     ->label('Institusi')
-                //     ->numeric(),
+                Section::make('Data Sekolah')
+                    ->columns(3)
+                    ->schema([
+                        TextInput::make('nama')
+                            ->label('Nama Sekolah')
+                            ->required()
+                            ->columnSpanFull(),
+                        TextInput::make('nsm')
+                            ->label('NSM'),
+                        TextInput::make('npsn')
+                            ->label('NPSN'),
+                        Select::make('jenjang')
+                            ->label('Jenjang')
+                            ->options(static::getJenjangOptions())
+                            ->required(),
+                        TextInput::make('telepon')
+                            ->label('Telepon')
+                            ->tel(),
+                        FileUpload::make('logo')
+                            ->label('Logo')
+                            ->columnSpanFull(),
+                        Textarea::make('alamat')
+                            ->label('Alamat Lengkap')
+                            ->columnSpanFull(),
+                    ])->columnSpanFull(),
             ]);
     }
 }
