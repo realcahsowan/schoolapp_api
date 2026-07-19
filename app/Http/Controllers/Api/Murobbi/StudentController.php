@@ -201,14 +201,19 @@ class StudentController extends Controller
         abort_unless($exists, 403);
 
         $periode = $request->get('periode');
+        $perPage = $request->integer('per_page', 15);
 
         $summaries = $student->memorizationSummaries()
             ->when($periode, fn($q) => $q->where('periode', $periode))
             ->orderBy('awal_periode', 'desc')
-            ->get();
+            ->paginate($perPage);
 
         return response()->json([
-            'summaries' => $summaries,
+            'summaries' => $summaries->items(),
+            'current_page' => $summaries->currentPage(),
+            'last_page' => $summaries->lastPage(),
+            'per_page' => $summaries->perPage(),
+            'total' => $summaries->total(),
         ]);
     }
 }
