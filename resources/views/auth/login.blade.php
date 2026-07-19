@@ -27,11 +27,18 @@
             box-shadow: 0 1px 3px rgba(0,0,0,.08);
         }
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: #f53003;
+            color: #1c1917;
             text-align: center;
             margin-bottom: .25rem;
+        }
+        .logo img {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            margin-bottom: .5rem;
         }
         .tagline {
             text-align: center;
@@ -115,7 +122,10 @@
 </head>
 <body>
     <div class="card">
-        <div class="logo">SchoolApp</div>
+        <div class="logo">
+            <img src="{{ asset('img/school-logo.png') }}" alt="Logo">
+            <div>{{ config('app.name', 'SchoolApp') }}</div>
+        </div>
         <p class="tagline">Masuk ke administrasi khusus</p>
 
         @if ($errors->any())
@@ -142,7 +152,7 @@
         </form>
 
         <div class="footer">
-            SchoolApp &middot; Laravel {{ app()->version() }}
+            {{ config('app.name', 'SchoolApp') }} &middot; Laravel {{ app()->version() }}
         </div>
     </div>
 </body>
