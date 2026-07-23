@@ -23,3 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/administrasi-khusus', [AdministrasiKhususController::class, 'index']);
     Route::get('/rapor-tahfidz/{id}', RaporTahfidzController::class)->name('rapor-tahfidz');
 });
+
+Route::middleware(['auth', 'admin.position'])->group(function () {
+    Route::get('/data-check', [\App\Http\Controllers\DataCheckController::class, 'index'])->name('data-check');
+    Route::post('/data-check', [\App\Http\Controllers\DataCheckController::class, 'check'])->name('data-check.post');
+});

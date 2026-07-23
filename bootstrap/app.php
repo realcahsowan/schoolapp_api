@@ -34,6 +34,10 @@ return Application::configure(basePath: dirname(__DIR__))
             ->dailyAt('19:50');
     })
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'admin.position' => \App\Http\Middleware\CheckAdminPosition::class,
+        ]);
+
         $middleware->api(prepend: [
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
